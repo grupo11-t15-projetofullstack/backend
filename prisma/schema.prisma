@@ -31,6 +31,9 @@ model Publications {
   model       String
   make        String
   year        Int
+  color       String
+  fuel        String
+  fipe        Int
   distance    Int
   price       Int
   images      String[]
