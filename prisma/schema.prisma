@@ -24,7 +24,7 @@ model User {
   birth        String
   publications Publications[]
   comments     Comments[]
-  address      Adresses[]
+  address      Adresses?
 
   @@map("users")
 }

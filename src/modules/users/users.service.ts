@@ -5,12 +5,20 @@ import { UsersRepository } from './repositories/users.repository';
 
 @Injectable()
 export class UsersService {
-  constructor(private usersRepository: UsersRepository) {}
-  
+  constructor(private usersRepository: UsersRepository) { }
+
   async create(createUserDto: CreateUserDto) {
     const findUser = await this.usersRepository.findByEmail(
       createUserDto.email
     )
+    const findCpf = await this.usersRepository.findByCpf(
+      createUserDto.cpf
+    )
+
+    if (findCpf) {
+      throw new ConflictException('cpf already exists');
+    }
+
     if (findUser) {
       throw new ConflictException('email already exists');
     }
@@ -19,7 +27,7 @@ export class UsersService {
   }
 
   async findAll() {
-    return this.usersRepository.findAll();
+    return await this.usersRepository.findAll();
   }
 
   async findOne(id: number) {
@@ -37,6 +45,8 @@ export class UsersService {
 
     return findUser;
   }
+
+
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     const findUser = await this.usersRepository.findOne(id);

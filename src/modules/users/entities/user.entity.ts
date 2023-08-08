@@ -12,5 +12,7 @@ export class User {
     description: string;
     cpf: string;
     birth: string;
+
+    @Exclude()
     password: string;
 }
