@@ -1,19 +1,21 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './repositories/users.repository';
 
 @Injectable()
 export class UsersService {
-  constructor(private usersRepository: UsersRepository) { }
+  constructor(private usersRepository: UsersRepository) {}
 
   async create(createUserDto: CreateUserDto) {
     const findUser = await this.usersRepository.findByEmail(
-      createUserDto.email
-    )
-    const findCpf = await this.usersRepository.findByCpf(
-      createUserDto.cpf
-    )
+      createUserDto.email,
+    );
+    const findCpf = await this.usersRepository.findByCpf(createUserDto.cpf);
 
     if (findCpf) {
       throw new ConflictException('cpf already exists');
@@ -45,8 +47,6 @@ export class UsersService {
 
     return findUser;
   }
-
-
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     const findUser = await this.usersRepository.findOne(id);
