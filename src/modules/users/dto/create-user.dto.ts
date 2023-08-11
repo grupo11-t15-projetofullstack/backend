@@ -1,44 +1,48 @@
-import { Adresses } from "@prisma/client";
-import { hashSync } from "bcrypt";
-import { Exclude, Transform } from 'class-transformer';
-import { IsEmail, IsNotEmpty, IsString, MinLength, IsBoolean } from "class-validator";
+import { Adresses } from '@prisma/client';
+import { hashSync } from 'bcrypt';
+import { Transform } from 'class-transformer';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  MinLength,
+  IsBoolean,
+} from 'class-validator';
 
 export class CreateUserDto {
-    @IsString()
-    name: string;
+  @IsString()
+  name: string;
 
-    @IsString()
-    @IsEmail()
-    email: string;
+  @IsString()
+  @IsEmail()
+  email: string;
 
-    @IsString()
-    phone: string;
+  @IsString()
+  phone: string;
 
+  addressId: Adresses;
 
-    addressId: Adresses;
+  @IsBoolean()
+  @Transform(({ obj, key }) => obj[key] === 'true')
+  isSeller: boolean;
 
-    
-    @IsBoolean()
-    @Transform(({ obj, key }) => obj[key] === 'true')
-    isSeller: boolean;
+  @IsString()
+  avatar: string;
 
-    @IsString()
-    avatar: string;
+  @IsString()
+  description: string;
 
-    @IsString()
-    description: string;
+  @IsString()
+  cpf: string;
 
-    @IsString()
-    cpf: string;
+  @IsString()
+  birth: string;
 
-    @IsString()
-    birth: string;
-
-    @IsString()
-    @MinLength(4)
-    @IsNotEmpty()
-    @Transform(({ value }: { value: string }) => hashSync(value, 10), {
+  @IsString()
+  @MinLength(4)
+  @IsNotEmpty()
+  @Transform(({ value }: { value: string }) => hashSync(value, 10), {
     groups: ['transform'],
   })
-    password: string;
+  password: string;
 }
