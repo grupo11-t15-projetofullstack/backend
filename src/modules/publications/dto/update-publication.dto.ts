@@ -14,6 +14,6 @@ export class UpdatePublicationDto extends PartialType(CreatePublicationDto) {
   distance: number;
   price: number;
   description: string;
-  comments: Comment[];
+  //comments: Comment[];
   images: Images[];
 }
