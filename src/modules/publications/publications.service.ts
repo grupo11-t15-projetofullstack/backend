@@ -1,26 +1,38 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePublicationDto } from './dto/create-publication.dto';
 import { UpdatePublicationDto } from './dto/update-publication.dto';
+import { PublicationsRepository } from './repositories/publications.repository';
+
 
 @Injectable()
 export class PublicationsService {
-  create(createPublicationDto: CreatePublicationDto) {
-    return 'This action adds a new publication';
+  constructor(private PublicationRepository: PublicationsRepository) { }
+  async create(data: CreatePublicationDto) {
+    return await this.PublicationRepository.create(data)
   }
 
-  findAll() {
-    return `This action returns all publications`;
+  async findAll() {
+    return await this.PublicationRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} publication`;
+  async findOne(id: number) {
+    const publication = await this.PublicationRepository.findoOne(id);
+    if (!publication) {
+      throw new NotFoundException("Publication not found")
+    }
+    return publication;
   }
 
-  update(id: number, updatePublicationDto: UpdatePublicationDto) {
-    return `This action updates a #${id} publication`;
+  async update(id: number, data: UpdatePublicationDto) {
+    const publication = await this.PublicationRepository.update(id, data);
+    if (!publication) {
+      throw new NotFoundException("Publication not found")
+    }
+    return publication
   }
 
   remove(id: number) {
-    return `This action removes a #${id} publication`;
+    return this.PublicationRepository.delete(id);
+
   }
 }

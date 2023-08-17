@@ -1,4 +1,7 @@
-export class CreatePublicationDto {
+import { randomUUID } from "crypto"
+
+export class Publication {
+    readonly id: number
     model:string
     make:string
     year:number
@@ -7,8 +10,8 @@ export class CreatePublicationDto {
     distance:number
     isGoodSale: Boolean
     price:number
-    userId:string
+    userId:number
     createdAt:Date
     description:string
     coverImg:string
-}
+}   
