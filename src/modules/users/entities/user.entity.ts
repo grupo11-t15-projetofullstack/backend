@@ -1,12 +1,12 @@
-import { Adresses } from '@prisma/client';
 import { Exclude } from 'class-transformer';
+import { Addresses } from 'src/modules/adresses/entities/addresses.entity';
 
 export class User {
   readonly id: number;
   name: string;
   email: string;
   phone: string;
-  addressId?: Adresses;
+  addressId?: Addresses;
   isSeller: boolean;
   avatar: string;
   description: string;

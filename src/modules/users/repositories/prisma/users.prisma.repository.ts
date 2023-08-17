@@ -5,6 +5,7 @@ import { CreateUserDto } from '../../dto/create-user.dto';
 import { UpdateUserDto } from '../../dto/update-user.dto';
 import { User } from '../../entities/user.entity';
 import { plainToInstance } from 'class-transformer';
+import { Addresses } from 'src/modules/adresses/entities/addresses.entity';
 
 @Injectable()
 export class UsersPrismaRepository implements UsersRepository {
@@ -15,9 +16,29 @@ export class UsersPrismaRepository implements UsersRepository {
       ...data,
     });
     const newUser = await this.prisma.user.create({
-      data: { ...user },
+      data: {
+        avatar: user.avatar,
+        birth: user.birth,
+        cpf: user.cpf,
+        description: user.description,
+        email: user.email,
+        isSeller: user.isSeller,
+        name: user.name,
+        password: user.password,
+        phone: user.phone,
+        id: user.id,
+      },
     });
 
+    const addressData = data.addressId;
+    const address = new Addresses();
+    Object.assign(address, {
+      ...addressData,
+    });
+
+    await this.prisma.adresses.create({
+      data: { ...address, userId: newUser.id },
+    });
     return plainToInstance(User, newUser);
   }
 
