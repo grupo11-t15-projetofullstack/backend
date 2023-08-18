@@ -1,16 +1,17 @@
 import {
-  Body,
   Controller,
-  Delete,
   Get,
-  Param,
-  Patch,
   Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { PublicationsService } from './publications.service';
 import { CreatePublicationDto } from './dto/create-publication.dto';
 import { UpdatePublicationDto } from './dto/update-publication.dto';
-import { PublicationsService } from './publications.service';
+import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Publications')
 @Controller('publications')
@@ -28,20 +29,20 @@ export class PublicationsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.publicationsService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.publicationsService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updatePublicationDto: UpdatePublicationDto,
   ) {
-    return this.publicationsService.update(+id, updatePublicationDto);
+    return this.publicationsService.update(id, updatePublicationDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.publicationsService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.publicationsService.remove(id);
   }
 }

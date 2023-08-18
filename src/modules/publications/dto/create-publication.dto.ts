@@ -1,4 +1,4 @@
-import { Images, Comments } from '@prisma/client';
+import { Comments } from '@prisma/client';
 import { IsNumber, IsString, IsBoolean } from 'class-validator';
 
 export class CreatePublicationDto {
@@ -37,5 +37,5 @@ export class CreatePublicationDto {
 
   comments: Comments[];
 
-  images: Images[];
+  images: string[];
 }

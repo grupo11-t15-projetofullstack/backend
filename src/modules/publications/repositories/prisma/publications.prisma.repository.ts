@@ -1,52 +1,42 @@
 import { Injectable } from '@nestjs/common';
 import { PublicationsRepository } from '../publications.repository';
-import { CreatePublicationDto } from '../../dto/create-publication.dto';
-import { UpdatePublicationDto } from '../../dto/update-publication.dto';
-import { Publication } from '../../entities/publication.entity';
+import { Publication } from '../../entities/publications.entity';
 import { PrismaService } from 'src/database/prisma.service';
-import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class PublicationsPrismaRepository implements PublicationsRepository {
   constructor(private prisma: PrismaService) {}
 
-  async create(data: CreatePublicationDto): Promise<Publication> {
+  async create(CreatePublicationDto: any): Promise<Publication> {
     const publication = new Publication();
     Object.assign(publication, {
-      ...data,
+      ...CreatePublicationDto,
     });
     const newPublication = await this.prisma.publications.create({
-      data: {
-        color: publication.color,
-        coverImg: publication.coverImg,
-        description: publication.description,
-        distance: publication.distance,
-        fuel: publication.fuel,
-        isGoodSale: publication.isGoodSale,
-        make: publication.make,
-        model: publication.model,
-        price: publication.price,
-        year: publication.year,
-        userId: publication.userId.id,
-      },
+      data: { ...CreatePublicationDto },
     });
-
-    return plainToInstance(Publication, newPublication);
+    return newPublication;
   }
-
   async findAll(): Promise<Publication[]> {
-    throw new Error('Method not implemented.');
+    const publications = await this.prisma.publications.findMany();
+    return publications;
   }
-
-  async findOne(id: number): Promise<Publication> {
-    throw new Error('Method not implemented.');
+  async findoOne(id: number): Promise<Publication> {
+    const publication = await this.prisma.publications.findUnique({
+      where: { id },
+    });
+    return publication;
   }
-
-  async update(id: number, data: UpdatePublicationDto): Promise<Publication> {
-    throw new Error('Method not implemented.');
+  async update(id: number, data: any): Promise<Publication> {
+    const publication = await this.prisma.publications.update({
+      where: { id },
+      data: { ...data },
+    });
+    return publication;
   }
-
   async delete(id: number): Promise<void> {
-    throw new Error('Method not implemented.');
+    const publication = await this.prisma.publications.delete({
+      where: { id },
+    });
   }
 }
