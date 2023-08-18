@@ -1,12 +1,16 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
+
 datasource db {
   provider = "postgresql"
+
   url = env("DATABASE_URL")
 }
+
 model User {
   id           Int            @id @default(autoincrement())
   name         String
@@ -21,8 +25,10 @@ model User {
   publications Publications[]
   comments     Comments[]
   address      Adresses?
+
   @@map("users")
 }
+
 model Publications {
   id          Int        @id @default(autoincrement())
   model       String
@@ -40,8 +46,10 @@ model Publications {
   userId      Int
   comments    Comments[]
   images      Images[]
+
   @@map("publications")
 }
+
 model Comments {
   id          Int          @id @default(autoincrement())
   description String
@@ -50,8 +58,10 @@ model Comments {
   createdAt   DateTime     @default(now())
   user        User         @relation(fields: [userId], references: [id])
   userId      Int
+
   @@map("comments")
 }
+
 model Adresses {
   id         Int    @id @default(autoincrement())
   cep        String @db.VarChar(8)
@@ -61,8 +71,10 @@ model Adresses {
   complement String
   user       User   @relation(fields: [userId], references: [id])
   userId     Int    @unique
+
   @@map("addresses")
 }
+
 model Images {
   id             Int          @id @default(autoincrement())
   publications   Publications @relation(fields: [publicationsId], references: [id])

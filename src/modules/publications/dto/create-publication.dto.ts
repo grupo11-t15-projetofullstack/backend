@@ -1,14 +1,41 @@
+import { Comments } from '@prisma/client';
+import { IsNumber, IsString, IsBoolean } from 'class-validator';
+
 export class CreatePublicationDto {
-    model:string
-    make:string
-    year:number
-    color:string
-    fuel:string
-    distance:number
-    isGoodSale: Boolean
-    price:number
-    userId:string
-    createdAt:Date
-    description:string
-    coverImg:string
+  @IsString()
+  model: string;
+
+  @IsString()
+  make: string;
+
+  @IsNumber()
+  year: number;
+
+  @IsString()
+  color: string;
+
+  @IsString()
+  fuel: string;
+
+  @IsBoolean()
+  isGoodSale: boolean;
+
+  @IsString()
+  coverImg: string;
+
+  @IsNumber()
+  distance: number;
+
+  @IsNumber()
+  price: number;
+
+  @IsString()
+  description: string;
+
+  @IsNumber()
+  userId: number;
+
+  comments: Comments[];
+
+  images: string[];
 }

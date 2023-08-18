@@ -1,11 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { PublicationsService } from './publications.service';
 import { CreatePublicationDto } from './dto/create-publication.dto';
 import { UpdatePublicationDto } from './dto/update-publication.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Publications')
 @Controller('publications')
 export class PublicationsController {
-  constructor(private readonly publicationsService: PublicationsService) { }
+  constructor(private readonly publicationsService: PublicationsService) {}
 
   @Post()
   create(@Body() createPublicationDto: CreatePublicationDto) {
@@ -23,7 +34,10 @@ export class PublicationsController {
   }
 
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() updatePublicationDto: UpdatePublicationDto) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updatePublicationDto: UpdatePublicationDto,
+  ) {
     return this.publicationsService.update(id, updatePublicationDto);
   }
 

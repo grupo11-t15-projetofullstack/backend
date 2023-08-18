@@ -5,14 +5,15 @@ import { PrismaService } from 'src/database/prisma.service';
 import { PublicationsRepository } from './repositories/publications.repository';
 import { PublicationsPrismaRepository } from './repositories/prisma/publications.prisma.repository';
 
-
 @Module({
   controllers: [PublicationsController],
-  providers: [PublicationsService, PrismaService,
+  providers: [
+    PublicationsService,
+    PrismaService,
     {
-    provide:PublicationsRepository,
-    useClass:PublicationsPrismaRepository,
-  },
-],
+      provide: PublicationsRepository,
+      useClass: PublicationsPrismaRepository,
+    },
+  ],
 })
-export class PublicationsModule { }
+export class PublicationsModule {}
