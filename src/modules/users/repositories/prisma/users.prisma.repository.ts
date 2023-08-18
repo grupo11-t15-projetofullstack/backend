@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { UsersRepository } from '../users.repository';
+import { plainToInstance } from 'class-transformer';
 import { PrismaService } from 'src/database/prisma.service';
 import { CreateUserDto } from '../../dto/create-user.dto';
 import { UpdateUserDto } from '../../dto/update-user.dto';
 import { User } from '../../entities/user.entity';
+import { UsersRepository } from '../users.repository';
 import { plainToInstance } from 'class-transformer';
 import { Addresses } from 'src/modules/adresses/entities/addresses.entity';
 
