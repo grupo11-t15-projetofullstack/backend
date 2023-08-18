@@ -1,10 +1,12 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsString, MaxLength } from 'class-validator';
 
 export class CreateAddressesDto {
   @IsString()
+  @MaxLength(8)
   cep: string;
 
   @IsString()
+  @MaxLength(2)
   state: string;
 
   @IsString()
@@ -15,7 +17,4 @@ export class CreateAddressesDto {
 
   @IsString()
   complement: string;
-
-  @IsNumber()
-  userId: number;
 }

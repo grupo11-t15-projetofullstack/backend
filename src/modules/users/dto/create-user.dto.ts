@@ -1,13 +1,15 @@
-import { Adresses } from '@prisma/client';
 import { hashSync } from 'bcrypt';
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   IsBoolean,
   IsEmail,
   IsNotEmpty,
   IsString,
   MinLength,
+  IsBoolean,
+  ValidateNested,
 } from 'class-validator';
+import { CreateAddressesDto } from 'src/modules/adresses/dto/create-addresses.dto';
 
 export class CreateUserDto {
   @IsString()
@@ -20,7 +22,9 @@ export class CreateUserDto {
   @IsString()
   phone: string;
 
-  addressId: Adresses;
+  @ValidateNested({ each: true })
+  @Type(() => CreateAddressesDto)
+  addressId: CreateAddressesDto;
 
   @IsBoolean()
   @Transform(({ obj, key }) => obj[key] === 'true')
