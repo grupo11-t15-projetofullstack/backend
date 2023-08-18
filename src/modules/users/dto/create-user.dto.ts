@@ -2,11 +2,11 @@ import { Adresses } from '@prisma/client';
 import { hashSync } from 'bcrypt';
 import { Transform } from 'class-transformer';
 import {
+  IsBoolean,
   IsEmail,
   IsNotEmpty,
   IsString,
   MinLength,
-  IsBoolean,
 } from 'class-validator';
 
 export class CreateUserDto {

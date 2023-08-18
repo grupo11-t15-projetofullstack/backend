@@ -1,16 +1,18 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
-import { PublicationsService } from './publications.service';
+import { ApiTags } from '@nestjs/swagger';
 import { CreatePublicationDto } from './dto/create-publication.dto';
 import { UpdatePublicationDto } from './dto/update-publication.dto';
+import { PublicationsService } from './publications.service';
 
+@ApiTags('Publications')
 @Controller('publications')
 export class PublicationsController {
   constructor(private readonly publicationsService: PublicationsService) {}

@@ -1,7 +1,6 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreatePublicationDto } from './create-publication.dto';
 import { Images } from '@prisma/client';
-import { Comment } from 'src/modules/comments/entities/comment.entity';
+import { CreatePublicationDto } from './create-publication.dto';
 
 export class UpdatePublicationDto extends PartialType(CreatePublicationDto) {
   model: string;
@@ -14,6 +13,6 @@ export class UpdatePublicationDto extends PartialType(CreatePublicationDto) {
   distance: number;
   price: number;
   description: string;
-  comments: Comment[];
+  // comments: Comment[];
   images: Images[];
 }
