@@ -5,12 +5,11 @@ import { CreateUserDto } from '../../dto/create-user.dto';
 import { UpdateUserDto } from '../../dto/update-user.dto';
 import { User } from '../../entities/user.entity';
 import { UsersRepository } from '../users.repository';
-import { plainToInstance } from 'class-transformer';
 import { Addresses } from 'src/modules/adresses/entities/addresses.entity';
 
 @Injectable()
 export class UsersPrismaRepository implements UsersRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
   async create(data: CreateUserDto): Promise<User> {
     const user = new User();
     Object.assign(user, {
@@ -50,6 +49,28 @@ export class UsersPrismaRepository implements UsersRepository {
   async findOne(id: number): Promise<User> {
     const users = await this.prisma.user.findUnique({
       where: { id },
+      include: {
+        publications: {
+          select: {
+            id: true,
+            model: true,
+            make: true,
+            year: true,
+            color: true,
+            fuel: true,
+            isGoodSale: true,
+            coverImg: true,
+            distance: true,
+            price: true,
+            createdAt: true,
+            description: true,
+            // user: false,
+            comments: true,
+            images: true,
+            _count: true,
+          }
+        }
+      }
     });
     return plainToInstance(User, users);
   }

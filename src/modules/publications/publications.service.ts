@@ -7,9 +7,10 @@ import { PublicationsRepository } from './repositories/publications.repository';
 export class PublicationsService {
   constructor(private publicationsRepository: PublicationsRepository) {}
 
-  async create(createPublicationDto: CreatePublicationDto) {
+  async create(createPublicationDto: CreatePublicationDto, userId: string) {
     const publication = await this.publicationsRepository.create(
       createPublicationDto,
+      userId
     );
     return publication;
   }
