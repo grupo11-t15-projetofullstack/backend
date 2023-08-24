@@ -7,23 +7,66 @@ import { PrismaService } from 'src/database/prisma.service';
 export class PublicationsPrismaRepository implements PublicationsRepository {
   constructor(private prisma: PrismaService) {}
 
-  async create(CreatePublicationDto: any): Promise<Publication> {
+
+  async create(CreatePublicationDto: any, userId: string): Promise<Publication> {
+    console.log(userId)
+    const id = Number(userId)
     const publication = new Publication();
     Object.assign(publication, {
       ...CreatePublicationDto,
+      userId: id
     });
     const newPublication = await this.prisma.publications.create({
-      data: { ...CreatePublicationDto },
+      data: { model: publication.model,
+              make: publication.make,
+              year: publication.year,
+              color: publication.color,
+              fuel: publication.fuel,
+              distance: publication.distance,
+              isGoodSale: true,
+              price: publication.price,
+              userId: publication.userId,
+              description: publication.description,
+              coverImg: publication.coverImg,
+
+
+        
+        },
     });
-    return newPublication;
+    const createPublication = await this.prisma.publications.findFirst(
+      {
+        where: {
+          id: newPublication.id
+        },
+        include: {
+          user: {
+            select: {
+              name: true
+            }
+          }
+        }
+      }
+    )
+    return createPublication;
   }
   async findAll(): Promise<Publication[]> {
-    const publications = await this.prisma.publications.findMany();
+    const publications = await this.prisma.publications.findMany(
+      {
+        include: {
+          user: {
+            select: {
+              name: true
+            }
+          }
+        }
+      }
+    );
     return publications;
   }
-  async findoOne(id: number): Promise<Publication> {
+  async findOne(id: number): Promise<Publication> {
     const publication = await this.prisma.publications.findUnique({
       where: { id },
+     
     });
     return publication;
   }

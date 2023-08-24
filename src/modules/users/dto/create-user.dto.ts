@@ -6,7 +6,6 @@ import {
   IsNotEmpty,
   IsString,
   MinLength,
-  IsBoolean,
   ValidateNested,
 } from 'class-validator';
 import { CreateAddressesDto } from 'src/modules/adresses/dto/create-addresses.dto';
