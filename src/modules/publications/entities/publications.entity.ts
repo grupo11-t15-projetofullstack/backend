@@ -1,4 +1,5 @@
 import { randomUUID } from "crypto"
+import { Comments, Images, User } from '@prisma/client';
 
 export class Publication {
     readonly id: number
@@ -11,7 +12,8 @@ export class Publication {
     isGoodSale: Boolean
     price:number
     userId:number
-    createdAt:Date
+    readonly createdAt: Date | string;
     description:string
     coverImg:string
+    // images: Images[];
 }   

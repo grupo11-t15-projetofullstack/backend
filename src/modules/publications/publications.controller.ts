@@ -7,11 +7,15 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
+  Request
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreatePublicationDto } from './dto/create-publication.dto';
 import { UpdatePublicationDto } from './dto/update-publication.dto';
 import { PublicationsService } from './publications.service';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { JwtauthGuard } from '../auth/jst-auth.guard';
 
 @ApiTags('Publications')
 @Controller('publications')
@@ -19,8 +23,11 @@ export class PublicationsController {
   constructor(private readonly publicationsService: PublicationsService) {}
 
   @Post()
-  create(@Body() createPublicationDto: CreatePublicationDto) {
-    return this.publicationsService.create(createPublicationDto);
+    @UseGuards(JwtauthGuard)
+    @ApiBearerAuth()
+  create(@Body() createPublicationDto: CreatePublicationDto, @Request() req) {
+    console.log('######################',req.user)
+    return this.publicationsService.create(createPublicationDto, req.user.id);
   }
 
   @Get()

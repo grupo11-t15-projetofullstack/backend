@@ -32,10 +32,5 @@ export class CreatePublicationDto {
   @IsString()
   description: string;
 
-  @IsNumber()
-  userId: number;
-
-  comments: Comments[];
-
   images: string[];
 }
