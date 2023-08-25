@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { hashSync } from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
 import { PrismaService } from 'src/database/prisma.service';
+import { Addresses } from 'src/modules/adresses/entities/addresses.entity';
 import { CreateUserDto } from '../../dto/create-user.dto';
 import { UpdateUserDto } from '../../dto/update-user.dto';
 import { User } from '../../entities/user.entity';
@@ -83,6 +85,14 @@ export class UsersPrismaRepository implements UsersRepository {
     return user;
   }
 
+  async findByToken(token: string): Promise<User> {
+    const user = await this.prisma.user.findFirst({
+      where: { reset_token: token },
+    });
+
+    return user;
+  }
+
   async findByCpf(cpf: string): Promise<User> {
     const user = await this.prisma.user.findFirst({
       where: { cpf },
@@ -101,6 +111,22 @@ export class UsersPrismaRepository implements UsersRepository {
   async delete(id: number): Promise<void> {
     await this.prisma.user.delete({
       where: { id },
+    });
+  }
+
+  async updateToken(email: string, token: string): Promise<void> {
+    await this.prisma.user.update({
+      where: { email },
+      data: { reset_token: token },
+    });
+  }
+  async updatePassword(id: number, password: string): Promise<void> {
+    await this.prisma.user.update({
+      where: { id },
+      data: {
+        password: hashSync(password, 10),
+        reset_token: null,
+      },
     });
   }
 }

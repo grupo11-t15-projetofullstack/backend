@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { PublicationsRepository } from '../publications.repository';
-import { Publication } from '../../entities/publications.entity';
 import { PrismaService } from 'src/database/prisma.service';
+import { Publication } from '../../entities/publications.entity';
+import { PublicationsRepository } from '../publications.repository';
 
 @Injectable()
 export class PublicationsPrismaRepository implements PublicationsRepository {

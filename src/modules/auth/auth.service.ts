@@ -32,7 +32,6 @@ export class AuthService {
         token: this.jwtService.sign(payload, jwtOptions),
       };
     }
-    
     // Handle the case where user is not found
     throw new NotFoundException('User not found');
   }

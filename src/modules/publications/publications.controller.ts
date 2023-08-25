@@ -1,21 +1,21 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
   ParseIntPipe,
+  Patch,
+  Post,
   UseGuards,
   Request
 } from '@nestjs/common';
-import { PublicationsService } from './publications.service';
+import { ApiTags } from '@nestjs/swagger';
 import { CreatePublicationDto } from './dto/create-publication.dto';
 import { UpdatePublicationDto } from './dto/update-publication.dto';
+import { PublicationsService } from './publications.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtauthGuard } from '../auth/jst-auth.guard';
-
 
 @ApiTags('Publications')
 @Controller('publications')
