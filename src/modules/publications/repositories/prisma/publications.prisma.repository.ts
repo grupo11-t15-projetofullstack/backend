@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { PublicationsRepository } from '../publications.repository';
-import { Publication } from '../../entities/publications.entity';
 import { PrismaService } from 'src/database/prisma.service';
+import { Publication } from '../../entities/publications.entity';
+import { PublicationsRepository } from '../publications.repository';
 
 @Injectable()
 export class PublicationsPrismaRepository implements PublicationsRepository {
@@ -21,7 +21,7 @@ export class PublicationsPrismaRepository implements PublicationsRepository {
     const publications = await this.prisma.publications.findMany();
     return publications;
   }
-  async findoOne(id: number): Promise<Publication> {
+  async findOne(id: number): Promise<Publication> {
     const publication = await this.prisma.publications.findUnique({
       where: { id },
     });
