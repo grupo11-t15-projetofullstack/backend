@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Request
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CommentsService } from './comments.service';
@@ -18,8 +19,8 @@ export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
   @Post()
-  create(@Body() createCommentDto: CreateCommentDto) {
-    return this.commentsService.create(createCommentDto);
+  create(@Body() createCommentDto: CreateCommentDto, @Request() req) {
+    return this.commentsService.create(createCommentDto, req.user.id, req.publication.id);
   }
 
   @Get()
