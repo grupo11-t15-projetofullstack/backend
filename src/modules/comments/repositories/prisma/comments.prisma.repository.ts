@@ -7,19 +7,24 @@ import { PrismaService } from 'src/database/prisma.service';
 @Injectable()
 export class CommentsPrismaRepository implements CommentsRepository {
     constructor(private prisma: PrismaService) { }
-    async create(data: CreateCommentDto, userId: string, publishId: string): Promise<Comment> {
+    async create(data: CreateCommentDto, userId: string): Promise<Comment> {
+        const publishId = data.publishId
         const id = Number(publishId)
+        const idUser = Number(userId)
+    
         const comment = new Comment()
         Object.assign(comment, {
-            ...CreateCommentDto,
-            publishId: id
+            ...data,
+            publishId: id,
+            userId: idUser
         });
+    
         const newComment = await this.prisma.comments.create({
             data: {
                 userId: comment.userId,
                 description: comment.description,
                 publishId: comment.publishId,
-                createdAt: comment.createdAt
+              
 
             },
         });
