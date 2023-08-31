@@ -7,12 +7,13 @@ import { CommentsRepository } from './repositories/comments.repository';
 export class CommentsService {
   constructor(private commentsRepository: CommentsRepository) {}
 
-  async create(createCommentDto: CreateCommentDto, userId:string, publishId:string) {
+  async create(createCommentDto: CreateCommentDto, userId:string) {
+
     const comment = await this.commentsRepository.create(
       createCommentDto,
       userId,
-      publishId
     );
+ 
     return comment;
   }
 
