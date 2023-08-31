@@ -10,7 +10,6 @@ import {
   UseGuards,
   Request
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
 import { CreatePublicationDto } from './dto/create-publication.dto';
 import { UpdatePublicationDto } from './dto/update-publication.dto';
 import { PublicationsService } from './publications.service';

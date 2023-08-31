@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { hashSync } from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
 import { PrismaService } from 'src/database/prisma.service';
-import { Addresses } from 'src/modules/adresses/entities/addresses.entity';
 import { CreateUserDto } from '../../dto/create-user.dto';
 import { UpdateUserDto } from '../../dto/update-user.dto';
 import { User } from '../../entities/user.entity';
