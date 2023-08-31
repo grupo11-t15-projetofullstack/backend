@@ -68,6 +68,7 @@ model Adresses {
   cep        String @db.VarChar(8)
   state      String @db.VarChar(2)
   city       String
+  street     String
   number     Int
   complement String
   user       User   @relation(fields: [userId], references: [id])

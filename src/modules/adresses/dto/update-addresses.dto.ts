@@ -6,5 +6,6 @@ export class UpdateAddressesDto extends PartialType(CreateAddressesDto) {
   state: string;
   city: string;
   number: number;
+  street: string;
   complement: string;
 }

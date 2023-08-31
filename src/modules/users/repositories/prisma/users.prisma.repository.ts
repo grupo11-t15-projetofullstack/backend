@@ -52,6 +52,17 @@ export class UsersPrismaRepository implements UsersRepository {
     const users = await this.prisma.user.findUnique({
       where: { id },
       include: {
+        address: {
+          select: {
+            id: true,
+            cep: true,
+            state: true,
+            city: true,
+            street: true,
+            number: true,
+            complement: true,
+          }
+        },
         publications: {
           select: {
             id: true,

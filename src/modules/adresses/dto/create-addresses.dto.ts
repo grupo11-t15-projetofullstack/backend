@@ -12,6 +12,9 @@ export class CreateAddressesDto {
   @IsString()
   city: string;
 
+  @IsString()
+  street: string
+
   @IsNumber()
   number: number;
 
