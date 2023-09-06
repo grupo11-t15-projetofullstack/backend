@@ -25,7 +25,7 @@ export class PublicationsController {
     @UseGuards(JwtauthGuard)
     @ApiBearerAuth()
   create(@Body() createPublicationDto: CreatePublicationDto, @Request() req) {
-    console.log('######################',req.user)
+
     return this.publicationsService.create(createPublicationDto, req.user.id);
   }
 

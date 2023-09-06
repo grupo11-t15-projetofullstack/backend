@@ -24,7 +24,7 @@ export class CommentsController {
   @UseGuards(JwtauthGuard)
   @ApiBearerAuth()
   create(@Body() createCommentDto: CreateCommentDto, @Request() req)  {
-    console.log(req.user.id)
+
     return this.commentsService.create(createCommentDto, req.user.id);
     
   }
