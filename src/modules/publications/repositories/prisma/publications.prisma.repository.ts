@@ -8,63 +8,60 @@ export class PublicationsPrismaRepository implements PublicationsRepository {
   constructor(private prisma: PrismaService) {}
 
 
+
   async create(CreatePublicationDto: any, userId: string): Promise<Publication> {
     const id = Number(userId)
+
     const publication = new Publication();
     Object.assign(publication, {
       ...CreatePublicationDto,
-      userId: id
+      userId: id,
     });
     const newPublication = await this.prisma.publications.create({
-      data: { model: publication.model,
-              make: publication.make,
-              year: publication.year,
-              color: publication.color,
-              fuel: publication.fuel,
-              distance: publication.distance,
-              isGoodSale: true,
-              price: publication.price,
-              userId: publication.userId,
-              description: publication.description,
-              coverImg: publication.coverImg,
-
-
-        
-        },
+      data: {
+        model: publication.model,
+        make: publication.make,
+        year: publication.year,
+        color: publication.color,
+        fuel: publication.fuel,
+        distance: publication.distance,
+        isGoodSale: publication.isGoodSale,
+        price: publication.price,
+        userId: publication.userId,
+        description: publication.description,
+        coverImg: publication.coverImg,
+      },
     });
-    const createPublication = await this.prisma.publications.findFirst(
-      {
-        where: {
-          id: newPublication.id
+    const createPublication = await this.prisma.publications.findFirst({
+      where: {
+        id: newPublication.id,
+      },
+      include: {
+        user: {
+          select: {
+            name: true,
+          },
         },
-        include: {
-          user: {
-            select: {
-              name: true
-            }
-          }
-        }
-      }
-    )
+      },
+    });
     return createPublication;
   }
   async findAll(): Promise<Publication[]> {
-    const publications = await this.prisma.publications.findMany(
-      {
-        include: {
-          user: {
-            select: {
-              name: true
-            }
-          }
-        }
-      }
-    );
+    const publications = await this.prisma.publications.findMany({
+      include: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
     return publications;
   }
   async findOne(id: number): Promise<Publication> {
     const publication = await this.prisma.publications.findUnique({
       where: { id },
+
       include: {
         user: {
           select:{
