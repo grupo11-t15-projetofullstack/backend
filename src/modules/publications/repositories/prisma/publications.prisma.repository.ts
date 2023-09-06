@@ -7,12 +7,11 @@ import { PublicationsRepository } from '../publications.repository';
 export class PublicationsPrismaRepository implements PublicationsRepository {
   constructor(private prisma: PrismaService) {}
 
-  async create(
-    CreatePublicationDto: any,
-    userId: string,
-  ): Promise<Publication> {
-    console.log(userId);
-    const id = Number(userId);
+
+
+  async create(CreatePublicationDto: any, userId: string): Promise<Publication> {
+    const id = Number(userId)
+
     const publication = new Publication();
     Object.assign(publication, {
       ...CreatePublicationDto,
@@ -62,6 +61,28 @@ export class PublicationsPrismaRepository implements PublicationsRepository {
   async findOne(id: number): Promise<Publication> {
     const publication = await this.prisma.publications.findUnique({
       where: { id },
+
+      include: {
+        user: {
+          select:{
+            name: true
+          }
+        },
+        comments: {
+          select:{
+            description: true,
+            id: true,
+            createdAt: true,
+            userId: true,
+            user: {
+              select: {
+                name: true
+              }
+            }
+          }
+        }
+      }
+     
     });
     return publication;
   }

@@ -25,7 +25,7 @@ export class AuthService {
   async login(email: string) {
     const user = await this.userService.findByEmail(email);
     if (user) {
-      const payload = { email: user.email };
+      const payload = { email: user.email, name: user.name };
       const jwtOptions = { subject: String(user.id) } as const;
 
       return {
