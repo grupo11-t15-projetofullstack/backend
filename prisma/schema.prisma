@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+
+  url = env("DATABASE_URL")
+}
+
+model User {
+  id           Int            @id @default(autoincrement())
+  name         String
+  email        String         @unique
+  password     String
+  phone        String
+  cpf          String         @unique
+  avatar       String
+  isSeller     Boolean
+  description  String
+  birth        String
+  reset_token  String?
+  publications Publications[]
+  comments     Comments[]
+  address      Adresses?
+
+  @@map("users")
+}
+
+model Publications {
+  id          Int        @id @default(autoincrement())
+  model       String
+  make        String
+  year        Int
+  color       String
+  fuel        String
+  isGoodSale  Boolean
+  coverImg    String
+  distance    Int
+  price       Int
+  createdAt   DateTime   @default(now())
+  description String
+  user        User       @relation(fields: [userId], references: [id])
+  userId      Int
+  comments    Comments[]
+  images      Images[]
+
+  @@map("publications")
+}
+
+model Comments {
+  id          Int          @id @default(autoincrement())
+  description String
+  publish     Publications @relation(fields: [publishId], references: [id])
+  publishId   Int
+  createdAt   DateTime     @default(now())
+  user        User         @relation(fields: [userId], references: [id])
+  userId      Int
+
+  @@map("comments")
+}
+
+model Adresses {
+  id         Int    @id @default(autoincrement())
+  cep        String @db.VarChar(8)
+  state      String @db.VarChar(2)
+  city       String
+  street     String
+  number     Int
+  complement String
+  user       User   @relation(fields: [userId], references: [id])
+  userId     Int    @unique
+
+  @@map("addresses")
+}
+
+model Images {
+  id             Int          @id @default(autoincrement())
+  publications   Publications @relation(fields: [publicationsId], references: [id])
+  publicationsId Int          @unique
+  images         String[]
+}

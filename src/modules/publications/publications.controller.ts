@@ -1,15 +1,32 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { PublicationsService } from './publications.service';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  UseGuards,
+  Request
+} from '@nestjs/common';
 import { CreatePublicationDto } from './dto/create-publication.dto';
 import { UpdatePublicationDto } from './dto/update-publication.dto';
+import { PublicationsService } from './publications.service';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { JwtauthGuard } from '../auth/jst-auth.guard';
 
+@ApiTags('Publications')
 @Controller('publications')
 export class PublicationsController {
   constructor(private readonly publicationsService: PublicationsService) {}
 
   @Post()
-  create(@Body() createPublicationDto: CreatePublicationDto) {
-    return this.publicationsService.create(createPublicationDto);
+    @UseGuards(JwtauthGuard)
+    @ApiBearerAuth()
+  create(@Body() createPublicationDto: CreatePublicationDto, @Request() req) {
+
+    return this.publicationsService.create(createPublicationDto, req.user.id);
   }
 
   @Get()
@@ -18,17 +35,20 @@ export class PublicationsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.publicationsService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.publicationsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePublicationDto: UpdatePublicationDto) {
-    return this.publicationsService.update(+id, updatePublicationDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updatePublicationDto: UpdatePublicationDto,
+  ) {
+    return this.publicationsService.update(id, updatePublicationDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.publicationsService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.publicationsService.remove(id);
   }
 }

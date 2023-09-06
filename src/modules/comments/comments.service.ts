@@ -1,26 +1,53 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
+import { CommentsRepository } from './repositories/comments.repository';
 
 @Injectable()
 export class CommentsService {
-  create(createCommentDto: CreateCommentDto) {
-    return 'This action adds a new comment';
+  constructor(private commentsRepository: CommentsRepository) {}
+
+  async create(createCommentDto: CreateCommentDto, userId:string) {
+
+    const comment = await this.commentsRepository.create(
+      createCommentDto,
+      userId,
+    );
+ 
+    return comment;
   }
 
-  findAll() {
-    return `This action returns all comments`;
+  async findAll() {
+    return await this.commentsRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} comment`;
+  async findOne(id: number) {
+    const find = await this.commentsRepository.findOne(id);
+    if (!find) {
+      throw new NotFoundException('Address not found');
+    }
+
+    return find;
+  
   }
 
-  update(id: number, updateCommentDto: UpdateCommentDto) {
-    return `This action updates a #${id} comment`;
+  async update(id: number, updateCommentDto: UpdateCommentDto) {
+    const find = await this.commentsRepository.findOne(id);
+
+    if (!find) {
+      throw new NotFoundException('Address not found');
+    }
+
+    return this.commentsRepository.update(id, updateCommentDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} comment`;
+  async remove(id: number) {
+    const find = await this.commentsRepository.findOne(id);
+
+    if (!find) {
+      throw new NotFoundException('Address not found');
+    }
+
+    return this.commentsRepository.delete(id);
   }
 }
