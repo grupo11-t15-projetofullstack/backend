@@ -30,6 +30,7 @@ export class AuthService {
 
       return {
         token: this.jwtService.sign(payload, jwtOptions),
+        id: user.id
       };
     }
     // Handle the case where user is not found
