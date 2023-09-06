@@ -26,7 +26,6 @@ export class CreateUserDto {
   addressId: CreateAddressesDto;
 
   @IsBoolean()
-  @Transform(({ obj, key }) => obj[key] === 'true')
   isSeller: boolean;
 
   @IsString()
